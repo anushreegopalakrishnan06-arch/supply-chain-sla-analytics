@@ -7,8 +7,16 @@
 
 ---
 
-## 🖥️ Executive Dashboard Preview
-![Supply Chain Control Tower Dashboard](dashboard/dashboard_preview.png)
+## 🖥️ Executive Power BI Dashboard Suite
+
+### Page 1: Operations Control Tower & Network Compliance
+![Page 1: Executive Control Tower](dashboard/dashboard_preview.png)
+
+### Page 2: Fulfillment Velocity & Geographic Trade Lanes
+![Page 2: Fulfillment Velocity & Trade Lanes](dashboard/page2_fulfillment_and_routes.png)
+
+### Page 3: Customer Trust, Seasonality & Churn Diagnostics
+![Page 3: Customer Trust, Seasonality & Churn](dashboard/page3_customer_trust_and_churn.png)
 
 ---
 
@@ -34,28 +42,26 @@ This project performs an end-to-end diagnostic across **99,441 real-world orders
 
 ---
 
-## 🧠 The 11 Core SQL Business Analyses
-
-The SQL analytics pipeline is structured into 4 modular execution suites answering 11 critical operational questions:
+## 🧠 The 11 Core SQL Business Analyses (Visualized Above)
 
 ### 1. Delivery SLA & Latency Diagnostics (`sql/02_sla_and_latency_diagnostics.sql`)
-* **Analysis 1 (SLA Adherence & DPMO):** Quantifies network delivery compliance against customer Promised Delivery Dates (PDD) and benchmarks defects against the 20,000 DPMO ceiling.
-* **Analysis 2 (Multi-Stage Latency Decomposition):** Decomposes delivery duration into Payment Approval Lag, Seller Warehouse Packing Lag, and Carrier Road Transit Lag, isolating that **82.4% of delay occurs during line-haul road transit**.
-* **Analysis 3 (Day-of-Week Dispatch Efficiency):** Measures seller dispatch latency and breach rates across order purchase days, identifying weekend order fulfillment lags.
+* **Analysis 1 (SLA Adherence & DPMO):** Quantifies network delivery compliance against customer Promised Delivery Dates (PDD) and benchmarks defects against the 20,000 DPMO ceiling *(Visualized on Page 1)*.
+* **Analysis 2 (Multi-Stage Latency Decomposition):** Decomposes delivery duration into Payment Approval Lag, Seller Warehouse Packing Lag, and Carrier Road Transit Lag, isolating that **82.4% of delay occurs during line-haul road transit** *(Visualized on Page 1)*.
+* **Analysis 3 (Day-of-Week Dispatch Efficiency):** Measures seller dispatch latency and breach rates across order purchase days, identifying weekend order fulfillment lags *(Visualized on Page 2)*.
 
 ### 2. Geographic & Trade Lane Analytics (`sql/03_geographic_and_route_analytics.sql`)
-* **Analysis 4 (Geographic Trade Lane Corridor Ranking):** Ranks Origin State $\rightarrow$ Destination State routes using `DENSE_RANK()` window functions to isolate high-risk corridors (e.g., SP $\rightarrow$ AM/AL with >22% breach rates).
-* **Analysis 5 (Intra-State vs Inter-State Performance Disparity):** Compares intra-state deliveries (98.2% on-time adherence) against cross-country long-haul routes (76.5% adherence).
+* **Analysis 4 (Geographic Trade Lane Corridor Ranking):** Ranks Origin State $\rightarrow$ Destination State routes using `DENSE_RANK()` window functions to isolate high-risk corridors like SP $\rightarrow$ AM/AL with >22% breach rates *(Visualized on Page 1)*.
+* **Analysis 5 (Intra-State vs Inter-State Performance Disparity):** Compares intra-state deliveries (98.2% on-time adherence) against cross-country long-haul routes (76.5% adherence) *(Visualized on Page 2)*.
 
 ### 3. Seller Performance & Freight Segmentation (`sql/04_seller_and_freight_segmentation.sql`)
-* **Analysis 6 (Seller Fulfillment Speed Scorecard):** Segments sellers into Gold (<24h), Silver (24-72h), and At-Risk (>72h) tiers, uncovering that the top 10% worst sellers generate 45% of warehouse dispatch delays.
-* **Analysis 7 (Freight Cost & Weight Tier Sensitivity):** Applies `NTILE(3)` quantiles to test whether bulky high-freight orders experience line-haul capacity bottlenecks.
+* **Analysis 6 (Seller Fulfillment Speed Scorecard):** Segments sellers into Gold (<24h), Silver (24-72h), and At-Risk (>72h) tiers, uncovering that the top 10% worst sellers generate 45% of warehouse dispatch delays *(Visualized on Page 2)*.
+* **Analysis 7 (Freight Cost & Weight Tier Sensitivity):** Applies `NTILE(3)` quantiles to test whether bulky high-freight orders experience line-haul capacity bottlenecks *(Visualized on Page 2)*.
 
 ### 4. Financial Concessions, Seasonality & Churn (`sql/05_financial_concessions_and_churn.sql`)
-* **Analysis 8 (Monthly Seasonality & Trailing Moving Averages):** Models promotional surge volume shocks (Black Friday effect) using 3-month trailing rolling averages.
-* **Analysis 9 (Customer Satisfaction & Review Score Decay):** Models customer rating collapse across delay severity tiers (On-time 4.3★ vs Overdue 1.6★).
-* **Analysis 10 (Financial Concession Liability Model):** Quantifies net freight refund exposure + goodwill compensation liability ($284,500 total exposure).
-* **Analysis 11 (First-Order Delivery Delay vs Customer Churn):** Analyzes repeat purchase rates, proving that customers experiencing a late delivery on their initial purchase suffer a **6.4x drop in repeat purchase frequency**.
+* **Analysis 8 (Monthly Seasonality & Trailing Moving Averages):** Models promotional surge volume shocks (Black Friday effect) using 3-month trailing rolling averages *(Visualized on Page 3)*.
+* **Analysis 9 (Customer Satisfaction & Review Score Decay):** Models customer rating collapse across delay severity tiers (On-time 4.3★ vs Overdue 1.6★) *(Visualized on Page 3)*.
+* **Analysis 10 (Financial Concession Liability Model):** Quantifies net freight refund exposure + goodwill compensation liability ($284,500 total exposure) *(Visualized on Page 3)*.
+* **Analysis 11 (First-Order Delivery Delay vs Customer Churn):** Analyzes repeat purchase rates, proving that customers experiencing a late delivery on their initial purchase suffer a **6.4x drop in repeat purchase frequency** *(Visualized on Page 3)*.
 
 ---
 
@@ -100,13 +106,15 @@ The SQL analytics pipeline is structured into 4 modular execution suites answeri
 ```text
 supply-chain-sla-analytics/
 │
-├── README.md                                  <- Executive project summary & embedded dashboard visual
+├── README.md                                  <- Executive project summary & embedded 3-page dashboard suite
 ├── requirements.txt                           <- Python dependencies
 ├── .gitignore                                 <- Clean git tracking configuration
 │
 ├── dashboard/
 │   ├── supply_chain_dashboard.pbix            <- Power BI Desktop Report File
-│   └── dashboard_preview.png                  <- High-Resolution Visual Control Tower Screenshot
+│   ├── dashboard_preview.png                  <- Page 1: Operations Control Tower & Network Compliance
+│   ├── page2_fulfillment_and_routes.png       <- Page 2: Fulfillment Velocity & Geographic Trade Lanes
+│   └── page3_customer_trust_and_churn.png     <- Page 3: Customer Trust, Seasonality & Churn Diagnostics
 │
 ├── notebooks/
 │   └── supply_chain_analysis.ipynb            <- In-depth Analytical Notebook with Matplotlib/Seaborn Charts
