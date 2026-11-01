@@ -111,7 +111,6 @@ supply-chain-sla-analytics/
 ├── .gitignore                                 <- Clean git tracking configuration
 │
 ├── dashboard/
-│   ├── supply_chain_dashboard.pbix            <- Power BI Desktop Report File
 │   ├── dashboard_preview.png                  <- Page 1: Operations Control Tower & Network Compliance
 │   ├── page2_fulfillment_and_routes.png       <- Page 2: Fulfillment Velocity & Geographic Trade Lanes
 │   └── page3_customer_trust_and_churn.png     <- Page 3: Customer Trust, Seasonality & Churn Diagnostics
@@ -127,5 +126,5 @@ supply-chain-sla-analytics/
 │   └── 05_financial_concessions_and_churn.sql <- Seasonality, Review decay, Concessions & Churn
 │
 └── data/
-    └── orders_fulfillment_bi.csv              <- Normalized telemetry dataset
+    └── sample_orders_fulfillment.csv          <- Sample telemetry dataset (Olist Logistics Network)
 ```
