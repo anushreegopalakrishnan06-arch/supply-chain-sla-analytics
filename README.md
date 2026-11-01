@@ -1,4 +1,4 @@
-# 📦 Enterprise Supply Chain Diagnostic: Delivery SLA Breach, Bottlenecks & Concession Analytics
+# 📦 Supply Chain Operations Control Tower: SLA Breach & Concession Analytics
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
 [![SQL](https://img.shields.io/badge/SQL-PostgreSQL%20%7C%20SQLite-orange.svg)](https://www.postgresql.org/)
@@ -7,59 +7,53 @@
 
 ---
 
-## 📌 Executive Summary
-In e-commerce and logistics operations, failing to deliver customer orders within the **Promised Delivery Date (PDD)** triggers a severe double financial penalty: **direct concession losses** (shipping refunds, appeasement credits) and **long-term customer churn** (review decay and customer lifetime value destruction).
-
-This project performs an end-to-end diagnostic across **99,441 real-world shipments** from the Olist logistics network. By decomposing fulfillment lifecycles across **7 deep analytical dimensions**, the diagnostic pinpoints the exact operational bottlenecks causing delivery failures and quantifies their direct dollar and customer satisfaction impact.
+## 🖥️ Executive Dashboard Preview
+![Supply Chain Control Tower Dashboard](dashboard/dashboard_preview.png)
 
 ---
 
-## 🏢 The 7 Core Analytical Modules
+## 📌 Project Overview
+In global fulfillment operations, delivering packages within the **Promised Delivery Date (PDD)** is critical to customer retention and unit economics. When delivery commitments are breached, businesses suffer a double financial blow:
+1. **Direct Operational Loss:** Customer concessions (shipping fee refunds, replacement units, appeasement coupons).
+2. **Customer Trust Erosion:** Rating collapse from 4.3★ to 2.1★ and elevated customer churn.
 
-```
-┌─────────────────────────────────────────────────────────────────────────────────────────────┐
-│                       7 DEEP SUPPLY CHAIN ANALYTICAL MODULES                                │
-├────────────────────────────────┬──────────────────────────┬────────────────────────────────┤
-│ 1. Network SLA & DPMO Benchmarks│ 2. Multi-Stage Latency   │ 3. Geographic Topology Matrix  │
-│ 4. Freight & Weight Sensitivity│ 5. Seller Fulfillment Tier│ 6. Holiday Surge Stress Test   │
-│ 7. Customer LTV & Concessions  │                          │                                │
-└────────────────────────────────┴──────────────────────────┴────────────────────────────────┘
-```
+This project performs an end-to-end diagnostic across **99,441 real-world orders** from the Olist logistics network to isolate fulfillment bottlenecks, quantify financial concession liabilities, and deliver actionable supply chain optimizations.
 
-### Module 1: Baseline SLA Compliance & Network Defect Density (DPMO)
-* **Finding:** Network-wide delivery SLA breach rate stands at **7.87% (7,827 overdue deliveries)**.
-* **Defect Density:** **78,269 DPMO** (Defects Per Million Opportunities), nearly 4x above the operational target (< 20,000 DPMO).
-* **Average Latency:** Overdue orders arrive **+5.4 days** beyond customer commitment.
+---
 
-### Module 2: Multi-Stage Latency Decomposition (Seller vs Carrier)
-* **The Culprit:** **Carrier Transit represents 82.4% of total delay time!**
-* **Stage Variance:**
-  * *On-Time Orders:* Seller Handover: **2.8 Days** | Carrier Road Transit: **8.0 Days** (Total: 11.2 Days)
-  * *Breached Orders:* Seller Handover: **3.8 Days** | Carrier Road Transit: **27.1 Days** (Total: 31.4 Days)
-* **Takeaway:** Warehouse packing is stable (+1 day variance); line-haul road freight transit is the primary point of failure (+19.1 days variance).
+## 🎯 Executive KPI Summary
 
-### Module 3: Geographic Topology (Intra-State vs Inter-State Route Matrix)
-* **Intra-State (Same State Delivery):** Maintains a **98.2% on-time adherence rate** with an average delivery duration of 5.1 days.
-* **Inter-State (Cross-Country Delivery):** Adherence drops to **76.5%**, with transit durations surging to 22.8 days for routes connecting Southeast economic hubs (SP, RJ) to Northern/Northeastern destinations (AM, AL, MA).
+| Metric | Benchmark Result | Operational Standard | Status |
+| :--- | :---: | :---: | :---: |
+| **Total Delivered Shipments** | **99,441** | 100% Completed Network Orders | Complete |
+| **On-Time Adherence Rate** | **92.13%** | Target: ≥ 95.0% | ⚠️ Below Target (-2.87%) |
+| **SLA Breach Rate (Overdue)** | **7.87%** (7,827 Orders) | Target: ≤ 5.0% | 🚨 Action Required |
+| **Network Defect Density (DPMO)** | **78,269 DPMO** | Target: < 20,000 DPMO | 🚨 3.9x Target Ceiling |
+| **Average Delay on Overdue Orders** | **+5.4 Days Late** | Target: ≤ 1.0 Day | ⚠️ High Latency |
+| **Estimated Concession Exposure** | **$284,500** | Net Freight Refunds + Appeasements | 💸 Financial Risk |
 
-### Module 4: Product Category, Weight & Freight-to-Price Sensitivity
-* **Heavy/Bulky Freight:** Orders in the top freight cost tier (>$25 freight) exhibit a **28.4% SLA breach rate** due to specialized line-haul handling requirements.
-* **Freight Drag:** High freight fees combined with late deliveries drive customer return escalations up by 3.2x.
+---
 
-### Module 5: Seller Fulfillment Performance & SLA Scorecard
-* **Seller Tiering:**
-  * *Tier 1 (Gold - < 24h Handover):* Accounts for 62% of volume with only a 4.1% breach rate.
-  * *Tier 3 (At-Risk - > 72h Handover):* Top 10% worst sellers generate **45% of all warehouse fulfillment delays**.
+## 🔍 Key Diagnostic Findings
 
-### Module 6: Seasonality & Holiday Surge Stress Test (Peak Shock)
-* **Volume Shock:** During Q4 promotional volume surges (Black Friday effect), order volume increases by 240%, exceeding regional carrier sorting capacity and doubling average transit delays from 11 days to **24 days**.
+### Fulfillment vs. Road Transit Bottleneck
+* **The Core Finding:** **Line-haul carrier road transit accounts for 82.4% of total delay time!**
+* *On-Time Orders:* Seller Handover: **2.8 Days** | Carrier Road Transit: **8.0 Days** (Total: 11.2 Days).
+* *Breached Orders:* Seller Handover: **3.8 Days** | Carrier Road Transit: **27.1 Days** (Total: 31.4 Days).
+* *Takeaway:* Warehouse packing is stable (+1 day variance); long-haul freight transit is the primary failure constraint (+19.1 days variance).
 
-### Module 7: Customer Trust Collapse & Financial Concession Exposure
-* **Review Score Decay:**
-  * On-Time Deliveries: **4.32 / 5.00 Rating** (81.4% 5-Star Promoters).
-  * 1–3 Days Late: **2.57 / 5.00 Rating** (35% 1-Star Detractors).
-  * > 7 Days Late: **1.62 / 5.00 Rating** (68.2% 1-Star Detractors).
-* **Financial Concession Exposure:** Breached orders represent an estimated **$284,500 in direct shipping refunds and appeasement credits**, alongside an estimated **$1.2M in churned Customer Lifetime Value (LTV)**.
+### Geographic Route Friction
+* **Intra-State Deliveries (Same State):** Achieves **98.2% on-time adherence** with an average delivery duration of 5.1 days.
+* **Inter-State Deliveries (Cross-Country):** Adherence drops to **76.5%**, with transit durations surging to 22.8 days for routes connecting Southeast economic hubs (SP, RJ) to Northern/Northeastern destinations (AM, AL, MA).
+
+### Customer Rating Decay
+* On-Time Deliveries: **4.32 / 5.00 Average Score** (81.4% 5-Star Reviews).
+* Deliveries Delayed by 1–3 Days: **2.57 / 5.00 Average Score** (35% 1-Star Complaints).
+* Deliveries Overdue by > 7 Days: **1.62 / 5.00 Average Score** (68.2% 1-Star Detractors).
+
+### Seller Fulfillment Speed Scorecard
+* Sellers maintaining handover times < 24 hours generate an SLA breach rate of only **4.1%**.
+* In contrast, the top 10% worst-performing sellers (> 72h dispatch) generate **45% of all warehouse fulfillment lag**.
 
 ---
 
@@ -104,12 +98,16 @@ This project performs an end-to-end diagnostic across **99,441 real-world shipme
 ```text
 supply-chain-sla-analytics/
 │
-├── README.md                                  <- Executive project summary & diagnostic findings
-├── requirements.txt                           <- Python dependencies (pandas, seaborn, matplotlib)
+├── README.md                                  <- Executive project summary & embedded dashboard visual
+├── requirements.txt                           <- Python dependencies
 ├── .gitignore                                 <- Clean git tracking configuration
 │
+├── dashboard/
+│   ├── supply_chain_dashboard.pbix            <- Power BI Desktop Report File
+│   └── dashboard_preview.png                  <- High-Resolution Dashboard Preview Image
+│
 ├── notebooks/
-│   └── supply_chain_sla_diagnostic.ipynb      <- 7-Module End-to-End Diagnostic Notebook with charts
+│   └── supply_chain_analysis.ipynb            <- End-to-end analytical notebook with visual charts
 │
 ├── sql/
 │   ├── 01_schema_setup.sql                    <- Star Schema DDL & indexing
@@ -117,9 +115,6 @@ supply-chain-sla-analytics/
 │   ├── 03_bottleneck_decomposition.sql        <- Seller vs Carrier latency breakdown
 │   └── 04_customer_review_concessions.sql     <- Review score decay & concession financial model
 │
-├── data/
-│   └── orders_fulfillment_bi.csv              <- Clean telemetry dataset
-│
-└── scripts/
-    └── data_pipeline.py                       <- Automated SQLite ETL & report exporter
+└── data/
+    └── orders_fulfillment_bi.csv              <- Normalized telemetry dataset
 ```
