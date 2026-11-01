@@ -17,7 +17,7 @@ In global fulfillment operations, delivering packages within the **Promised Deli
 1. **Direct Operational Loss:** Customer concessions (shipping fee refunds, replacement units, appeasement coupons).
 2. **Customer Trust Erosion:** Rating collapse from 4.3★ to 2.1★ and elevated customer churn.
 
-This project performs an end-to-end diagnostic across **99,441 real-world orders** from the Olist logistics network to isolate fulfillment bottlenecks, quantify financial concession liabilities, and deliver actionable supply chain optimizations.
+This project performs an end-to-end diagnostic across **99,441 real-world orders** from the Olist logistics network using an analytical Star Schema, advanced SQL modeling (CTEs, Window Functions), and statistical review decay curves to uncover core fulfillment bottlenecks and quantify financial concession liabilities.
 
 ---
 
@@ -34,26 +34,28 @@ This project performs an end-to-end diagnostic across **99,441 real-world orders
 
 ---
 
-## 🔍 Key Diagnostic Findings
+## 🧠 The 11 Core SQL Business Analyses
 
-### Fulfillment vs. Road Transit Bottleneck
-* **The Core Finding:** **Line-haul carrier road transit accounts for 82.4% of total delay time!**
-* *On-Time Orders:* Seller Handover: **2.8 Days** | Carrier Road Transit: **8.0 Days** (Total: 11.2 Days).
-* *Breached Orders:* Seller Handover: **3.8 Days** | Carrier Road Transit: **27.1 Days** (Total: 31.4 Days).
-* *Takeaway:* Warehouse packing is stable (+1 day variance); long-haul freight transit is the primary failure constraint (+19.1 days variance).
+The SQL analytics pipeline is structured into 4 modular execution suites answering 11 critical operational questions:
 
-### Geographic Route Friction
-* **Intra-State Deliveries (Same State):** Achieves **98.2% on-time adherence** with an average delivery duration of 5.1 days.
-* **Inter-State Deliveries (Cross-Country):** Adherence drops to **76.5%**, with transit durations surging to 22.8 days for routes connecting Southeast economic hubs (SP, RJ) to Northern/Northeastern destinations (AM, AL, MA).
+### 1. Delivery SLA & Latency Diagnostics (`sql/02_sla_and_latency_diagnostics.sql`)
+* **Analysis 1 (SLA Adherence & DPMO):** Quantifies network delivery compliance against customer Promised Delivery Dates (PDD) and benchmarks defects against the 20,000 DPMO ceiling.
+* **Analysis 2 (Multi-Stage Latency Decomposition):** Decomposes delivery duration into Payment Approval Lag, Seller Warehouse Packing Lag, and Carrier Road Transit Lag, isolating that **82.4% of delay occurs during line-haul road transit**.
+* **Analysis 3 (Day-of-Week Dispatch Efficiency):** Measures seller dispatch latency and breach rates across order purchase days, identifying weekend order fulfillment lags.
 
-### Customer Rating Decay
-* On-Time Deliveries: **4.32 / 5.00 Average Score** (81.4% 5-Star Reviews).
-* Deliveries Delayed by 1–3 Days: **2.57 / 5.00 Average Score** (35% 1-Star Complaints).
-* Deliveries Overdue by > 7 Days: **1.62 / 5.00 Average Score** (68.2% 1-Star Detractors).
+### 2. Geographic & Trade Lane Analytics (`sql/03_geographic_and_route_analytics.sql`)
+* **Analysis 4 (Geographic Trade Lane Corridor Ranking):** Ranks Origin State $\rightarrow$ Destination State routes using `DENSE_RANK()` window functions to isolate high-risk corridors (e.g., SP $\rightarrow$ AM/AL with >22% breach rates).
+* **Analysis 5 (Intra-State vs Inter-State Performance Disparity):** Compares intra-state deliveries (98.2% on-time adherence) against cross-country long-haul routes (76.5% adherence).
 
-### Seller Fulfillment Speed Scorecard
-* Sellers maintaining handover times < 24 hours generate an SLA breach rate of only **4.1%**.
-* In contrast, the top 10% worst-performing sellers (> 72h dispatch) generate **45% of all warehouse fulfillment lag**.
+### 3. Seller Performance & Freight Segmentation (`sql/04_seller_and_freight_segmentation.sql`)
+* **Analysis 6 (Seller Fulfillment Speed Scorecard):** Segments sellers into Gold (<24h), Silver (24-72h), and At-Risk (>72h) tiers, uncovering that the top 10% worst sellers generate 45% of warehouse dispatch delays.
+* **Analysis 7 (Freight Cost & Weight Tier Sensitivity):** Applies `NTILE(3)` quantiles to test whether bulky high-freight orders experience line-haul capacity bottlenecks.
+
+### 4. Financial Concessions, Seasonality & Churn (`sql/05_financial_concessions_and_churn.sql`)
+* **Analysis 8 (Monthly Seasonality & Trailing Moving Averages):** Models promotional surge volume shocks (Black Friday effect) using 3-month trailing rolling averages.
+* **Analysis 9 (Customer Satisfaction & Review Score Decay):** Models customer rating collapse across delay severity tiers (On-time 4.3★ vs Overdue 1.6★).
+* **Analysis 10 (Financial Concession Liability Model):** Quantifies net freight refund exposure + goodwill compensation liability ($284,500 total exposure).
+* **Analysis 11 (First-Order Delivery Delay vs Customer Churn):** Analyzes repeat purchase rates, proving that customers experiencing a late delivery on their initial purchase suffer a **6.4x drop in repeat purchase frequency**.
 
 ---
 
@@ -104,16 +106,17 @@ supply-chain-sla-analytics/
 │
 ├── dashboard/
 │   ├── supply_chain_dashboard.pbix            <- Power BI Desktop Report File
-│   └── dashboard_preview.png                  <- High-Resolution Dashboard Preview Image
+│   └── dashboard_preview.png                  <- High-Resolution Visual Control Tower Screenshot
 │
 ├── notebooks/
-│   └── supply_chain_analysis.ipynb            <- End-to-end analytical notebook with visual charts
+│   └── supply_chain_analysis.ipynb            <- In-depth Analytical Notebook with Matplotlib/Seaborn Charts
 │
 ├── sql/
 │   ├── 01_schema_setup.sql                    <- Star Schema DDL & indexing
-│   ├── 02_delivery_sla_breach_analysis.sql   <- SLA adherence & DPMO queries
-│   ├── 03_bottleneck_decomposition.sql        <- Seller vs Carrier latency breakdown
-│   └── 04_customer_review_concessions.sql     <- Review score decay & concession financial model
+│   ├── 02_sla_and_latency_diagnostics.sql     <- SLA Adherence, DPMO & Day-of-week dispatch
+│   ├── 03_geographic_and_route_analytics.sql  <- Trade lane ranking (DENSE_RANK) & Intra-state gap
+│   ├── 04_seller_and_freight_segmentation.sql <- Seller speed scorecard & Freight NTILE tiers
+│   └── 05_financial_concessions_and_churn.sql <- Seasonality, Review decay, Concessions & Churn
 │
 └── data/
     └── orders_fulfillment_bi.csv              <- Normalized telemetry dataset
